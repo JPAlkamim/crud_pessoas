@@ -12,7 +12,9 @@ export const Header = () => {
                 <Link to="/register-person">
                     <h1>Cadastro de Pessoas</h1>
                 </Link>
-                <h1>Listagem de Pessoas</h1>
+                <Link to="/list-person">
+                    <h1>Listagem de Pessoas</h1>
+                </Link>
                 <h1>Cadastro de Contato</h1>
                 <h1>Listagem de Contato</h1>
             </div>

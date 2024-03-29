@@ -1,6 +1,7 @@
 import './App.css'
-import { BrowserRouter as Router, Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom"
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom"
 import { Home } from './components/Home'
+import { ListPerson } from './components/ListPerson'
 import { RegisterPerson } from './components/RegisterPerson'
 import { ChakraProvider } from '@chakra-ui/react'
 
@@ -10,6 +11,7 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<Home />} />
       <Route path="/register-person" element={<RegisterPerson />} />
+      <Route path="/list-person" element={<ListPerson />} />
     </>
   )
 )

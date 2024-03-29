@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Header } from "./Header"
 import { FormControl, 
         FormLabel,
@@ -7,6 +7,7 @@ import { FormControl,
         FormErrorMessage,
         FormHelperText
 } from "@chakra-ui/react"
+import { usePersonData } from "../hooks/usePersonData";
 
 export const RegisterPerson = () => {
     const [name, setName] = useState('');
@@ -46,7 +47,9 @@ export const RegisterPerson = () => {
                         <FormLabel>Data de Nascimento</FormLabel>
                         <Input type="date" value={birthdate} onChange={(e) => handleBirthdate(e.target.value)} />
                     </FormControl>
-                    <Button onClick={handleSubmit}>Cadastrar</Button>
+                    <div className="flex justify-center mt-5">
+                        <Button onClick={handleSubmit}>Cadastrar</Button>
+                    </div>
                 </form>
             </div>
         </>
