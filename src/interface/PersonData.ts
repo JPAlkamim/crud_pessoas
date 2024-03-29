@@ -1,6 +1,6 @@
 export interface PersonData {
-    id: number,
+    id?: number,
     name: string,
     cpf: string,
-    birthdate: string
+    birthDate: string
 }
