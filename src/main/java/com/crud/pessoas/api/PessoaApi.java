@@ -1,0 +1,53 @@
+package com.crud.pessoas.api;
+
+import com.crud.pessoas.pessoa.Pessoa;
+import com.crud.pessoas.pessoa.dto.PessoaRequestDTO;
+import com.crud.pessoas.services.PessoaService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping ("api/pessoa")
+public class PessoaApi {
+
+    private final PessoaService pessoaService;
+
+    public PessoaApi(PessoaService pessoaService) {
+        this.pessoaService = pessoaService;
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping ("/all")
+    public List<Pessoa> getAll() {
+        return pessoaService.getAll();
+    }
+
+    @GetMapping ("/find-one/{id}")
+    public Pessoa getById(@PathVariable Long id) {
+        return pessoaService.getById(id);
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping ("/create")
+    public Pessoa create(@RequestBody PessoaRequestDTO pessoaRequestDTO) {
+        Pessoa pessoa = new Pessoa(pessoaRequestDTO);
+        return pessoaService.create(pessoa);
+    }
+
+    @DeleteMapping ("/delete/{id}")
+    public void delete(@PathVariable Long id) {
+        pessoaService.delete(id);
+    }
+
+    @PutMapping ("/update/{id}")
+    public Pessoa update(@PathVariable Long id, @RequestBody PessoaRequestDTO pessoaRequestDTO) {
+        Optional<Pessoa> pessoa = Optional.ofNullable(pessoaService.getById(id));
+        if (pessoa.isPresent()) {
+            return pessoaService.update(id, new Pessoa(pessoaRequestDTO));
+        } else {
+            return null;
+        }
+    }
+}
