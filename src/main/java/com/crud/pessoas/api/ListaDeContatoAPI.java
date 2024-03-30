@@ -1,6 +1,7 @@
 package com.crud.pessoas.api;
 
 import com.crud.pessoas.listaDeContato.ListaDeContato;
+import com.crud.pessoas.listaDeContato.dto.ListaDeContatoRequestDTO;
 import com.crud.pessoas.pessoa.Pessoa;
 import com.crud.pessoas.pessoa.dto.PessoaRequestDTO;
 import com.crud.pessoas.services.ListaDeContatoService;
@@ -33,7 +34,7 @@ public class ListaDeContatoAPI {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping ("/create")
-    public ListaDeContato create(@RequestBody ListaDeContato listaDeContato) {
+    public ListaDeContato create(@RequestBody ListaDeContatoRequestDTO listaDeContato) {
         return listaDeContatoService.create(listaDeContato);
     }
 
