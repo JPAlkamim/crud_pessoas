@@ -14,7 +14,8 @@ export const UpdateModalPerson = ({personData}: any) => {
         const date = new Date(personData.birthDate);
         const formattedDate = date.toISOString().split('T')[0];
         setBirthdate(formattedDate);
-    });
+        setCpf(cpfMask(personData.cpf));
+    }, []);
 
     const [name, setName] = useState(personData.name);
     const [cpf, setCpf] = useState(personData.cpf);
@@ -42,7 +43,6 @@ export const UpdateModalPerson = ({personData}: any) => {
     
     return (
         <div className="p-5">
-            <h1>Atualizar Dados da Pessoa</h1>
             <form>
                     <FormControl id="name" isRequired>
                         <FormLabel>Nome</FormLabel>

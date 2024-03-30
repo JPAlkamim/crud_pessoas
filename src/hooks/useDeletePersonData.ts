@@ -6,8 +6,12 @@ const API_URL= "http://localhost:8080/api";
 
 
 const deletePersonData = async (id: number): AxiosPromise<PersonData> => {
-    const response = await axios.delete(API_URL + `/pessoa/delete/${id}`);
-    return response;
+    try {
+        const response = await axios.delete(API_URL + `/pessoa/delete/${id}`);
+        return response;
+    } catch (error: any) {
+        throw new Error(error);
+    }
 }
 
 export function useDeletePersonData(): any {

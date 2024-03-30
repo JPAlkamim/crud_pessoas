@@ -4,8 +4,8 @@ export const Header = () => {
 
 
     return (
-        <div className="h-10 border-b-4 w-full fixed top-0">
-            <div className="grid grid-cols-5 px-10 justify-items-center">
+        <div className="h-10 w-full fixed top-0" style={{backgroundColor: "#ffe3a6"}}>
+            <div className="grid grid-cols-3 px-10 justify-items-center mt-2">
                 <Link to="/">
                     <h1>Início</h1>
                 </Link>
@@ -15,8 +15,6 @@ export const Header = () => {
                 <Link to="/list-person">
                     <h1>Listagem de Pessoas</h1>
                 </Link>
-                <h1>Cadastro de Contato</h1>
-                <h1>Listagem de Contato</h1>
             </div>
         </div>
     )

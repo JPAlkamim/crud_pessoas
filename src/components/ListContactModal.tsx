@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr, useToast } from "@chakra-ui/react"
 import { useState } from "react"
 import { useListContactData } from "../hooks/useListContactData";
 import { ListContact } from "../interface/ListContact";
@@ -13,6 +13,8 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
     const [name, setName] = useState('');
     const [telephone, setTelephone] = useState('');
     const [email, setEmail] = useState('');
+    const [wrongEmail, setWrongEmail] = useState(false);
+    const toast = useToast();
 
     const maskTelephone = (value: string) => {
         return value
@@ -43,21 +45,44 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
             return;
         }
 
+        const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+        if (!emailRegex.test(email)) {
+            setWrongEmail(true);
+            return;
+        }
+
         mutate({
             personId, 
             name, 
             telephone: unmaskTelephone(telephone), 
             email 
         });
+        clearFields();
+    }
+
+    const clearFields = () => {
+        setName('');
+        setTelephone('');
+        setEmail('');
+        setWrongEmail(false);
     }
 
     const handleDelete = (id?: number) => {
-        deleteContact(id);
+        if(data.length === 1) {
+            toast({
+                title: "Erro ao deletar",
+                description: "A pessoa precisa ter ao menos um contato",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            })
+        } else {
+            deleteContact(id);
+        }
     }
 
     return (
         <div className="p-5 overflow-scroll max-h-96">
-            <h2 className="text-xl flex justify-center mb-2">Lista de Contatos</h2>
             <Table variant="striped" size="sm">
                 <Thead>
                     <Tr>
@@ -96,9 +121,10 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
                             <FormLabel>Telefone</FormLabel>
                             <Input type="tel" value={telephone} onChange={(e) => handleTelephone(e.target.value)} size="sm" />
                         </FormControl>
-                        <FormControl id="email" isRequired>
+                        <FormControl id="email" isRequired isInvalid={wrongEmail}>
                             <FormLabel>Email</FormLabel>
                             <Input type="email" value={email} onChange={(e) => handleEmail(e.target.value)} size="sm" />
+                            <FormErrorMessage>Email inválido</FormErrorMessage>
                         </FormControl>
                     </div>
                     <div className="flex justify-center mt-5">

@@ -11,12 +11,17 @@ import { Table,
         TableCaption,
         Modal,
         ModalContent,
-        ModalOverlay
+        ModalOverlay,
+        useToast,
+        ModalCloseButton,
+        ModalHeader
 } from "@chakra-ui/react"
 import moment from "moment";
 import { UpdateModalPerson } from "./UptdateModalPerson";
 import { PersonData } from "../interface/PersonData";
 import { ListContactModal } from "./ListContactModal";
+import { useListContactData } from "../hooks/useListContactData";
+import axios from "axios";
 
 export const ListPerson = () => {
     const { data } = usePersonData();
@@ -24,6 +29,7 @@ export const ListPerson = () => {
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openListContactModal, setOpenListContactModal] = useState(false);
     const [person, setPerson] = useState<PersonData>();
+    const toast = useToast();
 
     const cpfMask = (value: string) => {
         return value
@@ -34,8 +40,20 @@ export const ListPerson = () => {
             .replace(/(-\d{2})\d+?$/, '$1')
     }
 
-    const handleDelete = (id: number) => {
-        mutate(id);
+    const handleDelete = async (id: number) => {
+        const response = await axios.get(`http://localhost:8080/api/lista-de-contato/all-by-person-id/${id}`);
+        if (response.data.length > 0) {
+            toast({
+                title: "Erro ao deletar",
+                description: "A pessoa possui contatos cadastrados",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            })
+            return;
+        } else {
+            mutate(id);
+        }
     }
 
     const handleEditModal = (clickedPerson: PersonData) => {
@@ -92,12 +110,16 @@ export const ListPerson = () => {
                 <Modal isOpen={openEditModal} onClose={() => setOpenEditModal(false)}>
                     <ModalOverlay />
                     <ModalContent>
+                        <ModalCloseButton />
+                        <ModalHeader>Atualizar Dados da Pessoa</ModalHeader>
                         <UpdateModalPerson personData={person}/>
                     </ModalContent>
                 </Modal>
                 <Modal isOpen={openListContactModal} onClose={() => setOpenListContactModal(false)} size="xl">
                     <ModalOverlay />
                     <ModalContent>
+                        <ModalCloseButton />
+                        <ModalHeader>Lista de Contatos</ModalHeader>
                         <ListContactModal personId={person?.id} />
                     </ModalContent>
                 </Modal>
