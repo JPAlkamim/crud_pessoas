@@ -4,13 +4,10 @@ import { FormControl,
         FormLabel,
         Input,
         Button,
-        FormErrorMessage,
-        FormHelperText,
         useToast
 } from "@chakra-ui/react"
 import { useRegisterPersonData } from "../hooks/useRegisterPersonData"
 import { PersonData } from "../interface/PersonData"
-import { validateCPF } from "../helpers/CPFHelper"
 import { cpfMask, cpfUnmask } from "../helpers/CPFMask"
 
 export const RegisterPerson = () => {
