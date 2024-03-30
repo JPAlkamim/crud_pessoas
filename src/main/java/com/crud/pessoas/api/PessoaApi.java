@@ -3,6 +3,7 @@ package com.crud.pessoas.api;
 import com.crud.pessoas.pessoa.Pessoa;
 import com.crud.pessoas.pessoa.dto.PessoaRequestDTO;
 import com.crud.pessoas.services.PessoaService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class PessoaApi {
         return pessoaService.getAll();
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping ("/find-one/{id}")
     public Pessoa getById(@PathVariable Long id) {
         return pessoaService.getById(id);
@@ -36,11 +38,14 @@ public class PessoaApi {
         return pessoaService.create(pessoa);
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @DeleteMapping ("/delete/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity delete(@PathVariable Long id) {
         pessoaService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PutMapping ("/update/{id}")
     public Pessoa update(@PathVariable Long id, @RequestBody PessoaRequestDTO pessoaRequestDTO) {
         Optional<Pessoa> pessoa = Optional.ofNullable(pessoaService.getById(id));
