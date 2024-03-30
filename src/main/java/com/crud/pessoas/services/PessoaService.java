@@ -5,6 +5,8 @@ import com.crud.pessoas.repository.PessoaRepository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,8 +17,8 @@ public class PessoaService {
     }
     private final PessoaRepository pessoaRepository;
 
-    public List<Pessoa> getAll() {
-        return pessoaRepository.findAll();
+    public Page<Pessoa> getAll(Pageable pageable) {
+        return pessoaRepository.findAll(pageable);
     }
 
     public Pessoa getById(Long id) {

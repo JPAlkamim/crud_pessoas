@@ -35,7 +35,7 @@ public class Pessoa {
         this.name = pessoaRequestDTO.getName();
         this.cpf = pessoaRequestDTO.getCpf();
         this.birthDate = pessoaRequestDTO.getBirthDate();
-        this.listaDeContato = pessoaRequestDTO.getListaDeContato()
+        this.listaDeContato = pessoaRequestDTO.getListContact()
                 .stream().map(listaDeContatoRequestDTO ->
                         new ListaDeContato(this, listaDeContatoRequestDTO))
                 .collect(Collectors.toList());

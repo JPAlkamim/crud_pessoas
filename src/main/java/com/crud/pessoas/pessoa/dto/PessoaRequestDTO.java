@@ -17,5 +17,5 @@ public class PessoaRequestDTO {
     private String name;
     private String cpf;
     private Date birthDate;
-    private List<ListaDeContatoRequestDTO> listaDeContato;
+    private List<ListaDeContatoRequestDTO> listContact;
 }
