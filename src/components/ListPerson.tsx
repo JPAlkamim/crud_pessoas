@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDeletePersonData } from "../hooks/useDeletePersonData";
 import { usePersonData } from "../hooks/usePersonData";
 import { Header } from "./Header"
@@ -14,22 +14,38 @@ import { Table,
         ModalOverlay,
         useToast,
         ModalCloseButton,
-        ModalHeader
+        ModalHeader,
+        Input,
+        Button,
 } from "@chakra-ui/react"
 import moment from "moment";
 import { UpdateModalPerson } from "./UptdateModalPerson";
 import { PersonData } from "../interface/PersonData";
 import { ListContactModal } from "./ListContactModal";
-import { useListContactData } from "../hooks/useListContactData";
 import axios from "axios";
 
 export const ListPerson = () => {
-    const { data } = usePersonData();
+    const { data } = usePersonData(0, 10);
     const { mutate } = useDeletePersonData();
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openListContactModal, setOpenListContactModal] = useState(false);
     const [person, setPerson] = useState<PersonData>();
     const toast = useToast();
+    const [personData, setPersonData] = useState<PersonData>({
+        name: '',
+        cpf: '',
+        birthDate: ''
+    } as PersonData);
+
+    const [pageable, setPageable] = useState({
+        page: 0,
+        size: 10
+    });
+
+    useEffect(() => {
+        console.log(data);
+        setPersonData(data);
+    }, [])
 
     const cpfMask = (value: string) => {
         return value
@@ -66,10 +82,24 @@ export const ListPerson = () => {
         setPerson(clickedPerson);
     }
 
+    const handleSearch = () => {
+        axios.get(`http://localhost:8080/api/pessoa/find-all/${pageable.page}/${pageable.size}`)
+            .then(response => {
+                setPersonData(response.data);
+            })
+    }
+
     return (
         <>
             <Header />
-            <div className="flex items-center justify-center h-screen mx-10">
+            <div className="items-center justify-center h-screen mx-10 mt-20">
+                <div className="flex mb-10">
+                    <h2 className="mr-2">Página: </h2>
+                    <Input style={{width: "50px"}} size="sm" className="mr-5" value={pageable.page} onChange={(e) => setPageable({...pageable, page: Number(e.target.value)})}/>
+                    <h2 className="mr-2">Total de itens: </h2>
+                    <Input style={{width: "50px"}} size="sm" className="mr-5" value={pageable.size} onChange={(e) => setPageable({...pageable, size: Number(e.target.value)})}/>
+                    <Button colorScheme="blue" size="sm" onClick={handleSearch}>Buscar</Button>
+                </div>
                 <Table variant="striped" size="sm">
                     <TableCaption>Lista de Pessoas</TableCaption>
                     <Thead>
@@ -81,7 +111,7 @@ export const ListPerson = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {data?.map((person: any) => (
+                        {personData?.content?.map((person: any) => (
                             <Tr key={person.id}>
                                 <Td>{person.name}</Td>
                                 <Td>{cpfMask(person.cpf)}</Td>

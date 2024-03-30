@@ -8,6 +8,7 @@ import { FormControl,
     } from "@chakra-ui/react"
 import { useUpdatePersonData } from "../hooks/useUpdatePersonData";
 import { cpfMask, cpfUnmask } from "../helpers/CPFMask";
+import { validateCPF } from "../helpers/CPFHelper";
 
 export const UpdateModalPerson = ({personData}: any) => {
     useEffect(() => {
@@ -25,6 +26,15 @@ export const UpdateModalPerson = ({personData}: any) => {
 
     const handleSubmit = () => {
         const cpfUnmasked = cpfUnmask(cpf);
+        if (validateCPF(cpfUnmasked) === false) {
+            toast({
+                title: "CPF inválido!",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            return;
+        }
         const personDataUpdate: PersonData =
         {   
             id: personData.id,

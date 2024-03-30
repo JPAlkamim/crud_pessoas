@@ -1,18 +1,17 @@
-import axios, { AxiosPromise } from "axios";
-import { PersonData } from "../interface/PersonData";
+import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 const API_URL= "http://localhost:8080/api";
 
 
-const fetchPersonData = async (): AxiosPromise<PersonData[]> => {
-    const response = await axios.get(API_URL + "/pessoa/all");
+const fetchPersonData = async (page: number, size: number): Promise<any> => {
+    const response = await axios.get(API_URL + `/pessoa/find-all/${page}/${size}`);
     return response;
 }
 
-export function usePersonData(): any {
+export function usePersonData(page: number = 0, size: number = 10): any {
     const query = useQuery({
-        queryFn: fetchPersonData,
+        queryFn: () => fetchPersonData(page, size),
         queryKey: ['person-data'],
         retry: 2
     })
