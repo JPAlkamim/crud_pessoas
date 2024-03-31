@@ -148,7 +148,7 @@ export const ListPerson = () => {
                     <ModalOverlay />
                     <ModalContent>
                         <ModalCloseButton />
-                        <ModalHeader>Lista de Contatos</ModalHeader>
+                        <ModalHeader>Lista de Contatos: {person?.name}</ModalHeader>
                         <ListContactModal personId={person?.id} />
                     </ModalContent>
                 </Modal>
