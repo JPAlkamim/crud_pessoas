@@ -25,7 +25,7 @@ import { ListContactModal } from "./ListContactModal";
 import axios from "axios";
 
 export const ListPerson = () => {
-    const { data } = usePersonData(0, 10);
+    const { data } = usePersonData(0, 5);
     const { mutate } = useDeletePersonData();
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openListContactModal, setOpenListContactModal] = useState(false);
@@ -39,13 +39,12 @@ export const ListPerson = () => {
 
     const [pageable, setPageable] = useState({
         page: 0,
-        size: 10
+        size: 5
     });
 
     useEffect(() => {
-        console.log(data);
         setPersonData(data);
-    }, [])
+    }, [data])
 
     const cpfMask = (value: string) => {
         return value

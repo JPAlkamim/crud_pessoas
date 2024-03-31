@@ -66,7 +66,7 @@ export const RegisterPerson = () => {
             });
             return false;
         }
-        if (validateCPF(personRegister.cpf)) {
+        if (!validateCPF(cpfUnmask(personRegister.cpf))) {
             toast({
                 title: "CPF inválido",
                 status: "error",
