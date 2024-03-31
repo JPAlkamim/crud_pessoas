@@ -23,7 +23,7 @@ public class ListaDeContato {
     private Long id;
 
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "person_id")
     private Pessoa personId;
     @NotBlank

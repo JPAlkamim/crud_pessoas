@@ -32,7 +32,6 @@ public class Pessoa {
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
-    @NotBlank
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "personId", cascade = CascadeType.ALL)
     private List<ListaDeContato> listaDeContato;

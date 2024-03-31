@@ -25,16 +25,27 @@ public class ListaDeContatoService {
     }
 
     public ListaDeContato getById(Long id) {
-        return listaDeContatoRepository.findById(id).orElse(null);
+        return listaDeContatoRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
     }
 
-    public ListaDeContato create(ListaDeContatoRequestDTO listaDeContatoRequestDTO) {
-        Pessoa pessoa = pessoaService.getById(listaDeContatoRequestDTO.getPersonId());
-        ListaDeContato listaDeContato = new ListaDeContato(pessoa, listaDeContatoRequestDTO);
-        return listaDeContatoRepository.save(listaDeContato);
+        public ListaDeContato create(ListaDeContatoRequestDTO listaDeContatoRequestDTO) {
+            validateContact(listaDeContatoRequestDTO);
+            Pessoa pessoa = pessoaService.getById(listaDeContatoRequestDTO.getPersonId());
+            ListaDeContato listaDeContato = new ListaDeContato(pessoa, listaDeContatoRequestDTO);
+            return listaDeContatoRepository.save(listaDeContato);
+        }
+
+        private void validateContact(ListaDeContatoRequestDTO listaDeContatoRequestDTO) {
+            if (listaDeContatoRequestDTO.getName() == null || listaDeContatoRequestDTO.getName().isEmpty()) {
+                throw new IllegalArgumentException("Name cannot be null or empty");
+            }
+            if (listaDeContatoRequestDTO.getEmail() == null || !listaDeContatoRequestDTO.getEmail().contains("@")) {
+                throw new IllegalArgumentException("Email must contain '@'");
+            }
+        }
+
+        public void delete(Long id) {
+            listaDeContatoRepository.deleteById(id);
+        }
     }
 
-    public void delete(Long id) {
-        listaDeContatoRepository.deleteById(id);
-    }
-}

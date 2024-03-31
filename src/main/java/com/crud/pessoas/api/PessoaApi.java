@@ -55,7 +55,11 @@ public class PessoaApi {
     public Pessoa update(@PathVariable Long id, @RequestBody PessoaRequestDTO pessoaRequestDTO) {
         Optional<Pessoa> pessoa = Optional.ofNullable(pessoaService.getById(id));
         if (pessoa.isPresent()) {
-            return pessoaService.update(id, new Pessoa(pessoaRequestDTO));
+            Pessoa pessoaToUpdate = pessoa.get();
+            pessoaToUpdate.setName(pessoaRequestDTO.getName());
+            pessoaToUpdate.setCpf(pessoaRequestDTO.getCpf());
+            pessoaToUpdate.setBirthDate(pessoaRequestDTO.getBirthDate());
+            return pessoaService.update(id, pessoaToUpdate);
         } else {
             return null;
         }

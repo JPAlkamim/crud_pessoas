@@ -34,14 +34,11 @@ public class PessoaService {
     }
 
     public Pessoa update(Long id, Pessoa pessoa) {
-        Pessoa pessoaToUpdate = pessoaRepository.findById(id).orElse(null);
-        if (pessoaToUpdate != null) {
-            pessoaToUpdate.setName(pessoa.getName());
-            pessoaToUpdate.setCpf(pessoa.getCpf());
-            pessoaToUpdate.setBirthDate(pessoa.getBirthDate());
-            return pessoaRepository.save(pessoaToUpdate);
-        } else {
-            return null;
-        }
+        Pessoa pessoaToUpdate = pessoaRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Person not found"));
+        pessoaToUpdate.setName(pessoa.getName());
+        pessoaToUpdate.setCpf(pessoa.getCpf());
+        pessoaToUpdate.setBirthDate(pessoa.getBirthDate());
+        return pessoaRepository.save(pessoaToUpdate);
     }
 }
