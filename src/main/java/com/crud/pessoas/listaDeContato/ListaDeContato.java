@@ -4,13 +4,12 @@ import com.crud.pessoas.listaDeContato.dto.ListaDeContatoRequestDTO;
 import com.crud.pessoas.pessoa.Pessoa;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -27,8 +26,11 @@ public class ListaDeContato {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     private Pessoa personId;
+    @NotBlank
     private String name;
+    @NotBlank
     private String telephone;
+    @Email
     private String email;
 
     public ListaDeContato(Pessoa pessoa, ListaDeContatoRequestDTO listaDeContatoRequestDTO) {

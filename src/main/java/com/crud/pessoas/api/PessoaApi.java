@@ -3,6 +3,7 @@ package com.crud.pessoas.api;
 import com.crud.pessoas.pessoa.Pessoa;
 import com.crud.pessoas.pessoa.dto.PessoaRequestDTO;
 import com.crud.pessoas.services.PessoaService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class PessoaApi {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping ("/create")
-    public Pessoa create(@RequestBody PessoaRequestDTO pessoaRequestDTO) {
+    public Pessoa create(@RequestBody @Valid PessoaRequestDTO pessoaRequestDTO) {
         Pessoa pessoa = new Pessoa(pessoaRequestDTO);
         return pessoaService.create(pessoa);
     }

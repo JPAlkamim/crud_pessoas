@@ -4,10 +4,12 @@ import com.crud.pessoas.listaDeContato.ListaDeContato;
 import com.crud.pessoas.pessoa.dto.PessoaRequestDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.Date;
 import java.util.List;
@@ -23,10 +25,14 @@ public class Pessoa {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
+    @CPF
     private String cpf;
+    @Temporal(TemporalType.DATE)
     private Date birthDate;
 
+    @NotBlank
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "personId", cascade = CascadeType.ALL)
     private List<ListaDeContato> listaDeContato;
