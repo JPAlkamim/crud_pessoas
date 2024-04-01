@@ -27,6 +27,7 @@ public class ListaDeContatoAPI {
         return listaDeContatoService.getAllByPersonId(id);
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping ("/find-one/{id}")
     public ListaDeContato getById(@PathVariable Long id) {
         return listaDeContatoService.getById(id);
