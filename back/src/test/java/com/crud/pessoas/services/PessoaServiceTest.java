@@ -109,6 +109,21 @@ class PessoaServiceTest {
             assertThrows(RuntimeException.class, () -> pessoaService.create(pessoa));
         }
 
+        @Test
+        @DisplayName("should throw an exception when trying to create a person with no contact list")
+        void createPersonWithoutContactList() throws ParseException {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = formatter.parse("01-01-1990");
+            var user = new PessoaRequestDTO(
+                    "John",
+                    "1234",
+                    date,
+                    null
+            );
+
+            assertThrows(RuntimeException.class, () -> new Pessoa(user));
+        }
+
     }
 
     @Nested

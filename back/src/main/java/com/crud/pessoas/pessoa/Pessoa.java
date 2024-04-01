@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -40,9 +41,13 @@ public class Pessoa {
         this.name = pessoaRequestDTO.getName();
         this.cpf = pessoaRequestDTO.getCpf();
         this.birthDate = pessoaRequestDTO.getBirthDate();
-        this.listaDeContato = pessoaRequestDTO.getListContact()
-                .stream().map(listaDeContatoRequestDTO ->
-                        new ListaDeContato(this, listaDeContatoRequestDTO))
-                .collect(Collectors.toList());
+        if (Objects.nonNull(pessoaRequestDTO.getListContact())) {
+            this.listaDeContato = pessoaRequestDTO.getListContact()
+                    .stream().map(listaDeContatoRequestDTO ->
+                            new ListaDeContato(this, listaDeContatoRequestDTO))
+                    .collect(Collectors.toList());
+        } else {
+            throw new RuntimeException("A lista de contatos não pode ser nula");
+        }
     }
 }
