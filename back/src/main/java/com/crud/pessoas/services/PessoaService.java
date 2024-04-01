@@ -26,7 +26,6 @@ public class PessoaService {
     }
 
     public Pessoa create(Pessoa pessoa) {
-//        validatePerson(pessoa);
         return pessoaRepository.save(pessoa);
     }
 
@@ -41,17 +40,5 @@ public class PessoaService {
         pessoaToUpdate.setCpf(pessoa.getCpf());
         pessoaToUpdate.setBirthDate(pessoa.getBirthDate());
         return pessoaRepository.save(pessoaToUpdate);
-    }
-
-    private void validatePerson(Pessoa pessoa) {
-        if (pessoa.getName() == null || pessoa.getName().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
-        if (pessoa.getCpf() == null || pessoa.getCpf().isEmpty()) {
-            throw new IllegalArgumentException("CPF cannot be null or empty");
-        }
-        if (pessoa.getBirthDate() == null) {
-            throw new IllegalArgumentException("Birth date cannot be null");
-        }
     }
 }

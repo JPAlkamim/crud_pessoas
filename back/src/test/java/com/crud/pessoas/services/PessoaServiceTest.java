@@ -55,7 +55,7 @@ class PessoaServiceTest {
             ));
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     listContact
             );
@@ -63,7 +63,7 @@ class PessoaServiceTest {
             var savedPerson = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     List.of(new ListaDeContato(
                             1L,
@@ -79,7 +79,7 @@ class PessoaServiceTest {
 
             assertEquals(1L, output.getId());
             assertEquals("John", output.getName());
-            assertEquals("12345678901", output.getCpf());
+            assertEquals("07687635922", output.getCpf());
             assertEquals(date, output.getBirthDate());
             assertEquals(1, output.getListaDeContato().size());
         }
@@ -127,7 +127,7 @@ class PessoaServiceTest {
             ));
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     listContact
             );
@@ -135,7 +135,7 @@ class PessoaServiceTest {
             var savedPerson = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     List.of(new ListaDeContato(
                             1L,
@@ -153,7 +153,7 @@ class PessoaServiceTest {
 
             var updatedUser = new PessoaRequestDTO(
                     "John Pedro",
-                    "12345678902",
+                    "16975528896",
                     date,
                     listContact
             );
@@ -165,7 +165,7 @@ class PessoaServiceTest {
 
             assertEquals(1L, updatedOutput.getId());
             assertEquals("John Pedro", updatedOutput.getName());
-            assertEquals("12345678902", updatedOutput.getCpf());
+            assertEquals("16975528896", updatedOutput.getCpf());
             assertEquals(date, updatedOutput.getBirthDate());
             assertEquals(1, updatedOutput.getListaDeContato().size());
         }
@@ -184,7 +184,7 @@ class PessoaServiceTest {
             ));
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     listContact
             );
@@ -192,7 +192,7 @@ class PessoaServiceTest {
             var savedPerson = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     List.of(new ListaDeContato(
                             1L,
@@ -210,7 +210,7 @@ class PessoaServiceTest {
 
             var updatedUser = new PessoaRequestDTO(
                     "John Doe",
-                    "12345678901",
+                    "07687635922",
                     date,
                     listContact
             );
@@ -237,7 +237,7 @@ class PessoaServiceTest {
             ));
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     listContact
             );
@@ -245,7 +245,7 @@ class PessoaServiceTest {
             var savedPerson = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     List.of(new ListaDeContato(
                             1L,
@@ -282,7 +282,7 @@ class PessoaServiceTest {
             ));
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     listContact
             );
@@ -290,7 +290,7 @@ class PessoaServiceTest {
             var savedPerson1 = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     List.of(new ListaDeContato(
                             1L,
@@ -343,7 +343,7 @@ class PessoaServiceTest {
             ));
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     listContact
             );
@@ -351,7 +351,7 @@ class PessoaServiceTest {
             var savedPerson = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     List.of(new ListaDeContato(
                             1L,

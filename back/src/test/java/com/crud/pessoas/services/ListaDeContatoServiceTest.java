@@ -51,7 +51,7 @@ class ListaDeContatoServiceTest {
             Date date = formatter.parse("01-01-1990");
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     new ArrayList<>()
             );
@@ -59,7 +59,7 @@ class ListaDeContatoServiceTest {
             var savedPerson = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     new ArrayList<>()
             );
@@ -105,7 +105,7 @@ class ListaDeContatoServiceTest {
             Date date = formatter.parse("01-01-1990");
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     new ArrayList<>()
             );
@@ -113,7 +113,7 @@ class ListaDeContatoServiceTest {
             var savedPerson = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     new ArrayList<>()
             );
@@ -140,7 +140,7 @@ class ListaDeContatoServiceTest {
             Date date = formatter.parse("01-01-1990");
             var user = new PessoaRequestDTO(
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     new ArrayList<>()
             );
@@ -148,7 +148,7 @@ class ListaDeContatoServiceTest {
             var savedPerson = new Pessoa(
                     1L,
                     "John",
-                    "12345678901",
+                    "07687635922",
                     date,
                     new ArrayList<>()
             );
