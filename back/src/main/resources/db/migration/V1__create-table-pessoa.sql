@@ -1,6 +1,0 @@
-CREATE TABLE Pessoa (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(200) NOT NULL,
-    cpf VARCHAR(12) NOT NULL,
-    birth_date TIMESTAMP NOT NULL
-);
