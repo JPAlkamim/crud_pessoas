@@ -116,7 +116,7 @@ class PessoaServiceTest {
             Date date = formatter.parse("01-01-1990");
             var user = new PessoaRequestDTO(
                     "John",
-                    "1234",
+                    "07687635922",
                     date,
                     null
             );
