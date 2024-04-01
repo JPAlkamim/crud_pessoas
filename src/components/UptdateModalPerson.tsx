@@ -42,13 +42,22 @@ export const UpdateModalPerson = ({personData}: any) => {
             cpf: cpfUnmasked,
             birthDate
         };
-        mutate(personDataUpdate);
-        toast({
-            title: "Pessoa atualizada com sucesso!",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-        });
+        try {
+            mutate(personDataUpdate);
+            toast({
+                title: "Pessoa atualizada com sucesso!",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            });
+        } catch (error) {
+            toast({
+                title: "Erro ao atualizar pessoa!",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+        }
     }
     
     return (

@@ -56,18 +56,27 @@ export const ListPerson = () => {
     }
 
     const handleDelete = async (id: number) => {
-        const response = await axios.get(`http://localhost:8080/api/lista-de-contato/all-by-person-id/${id}`);
-        if (response.data.length > 0) {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/lista-de-contato/all-by-person-id/${id}`);
+            if (response.data.length > 0) {
+                toast({
+                    title: "Erro ao deletar",
+                    description: "A pessoa possui contatos cadastrados",
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                })
+                return;
+            } else {
+                mutate(id);
+            }
+        } catch (error) {
             toast({
                 title: "Erro ao deletar",
-                description: "A pessoa possui contatos cadastrados",
                 status: "error",
                 duration: 2000,
                 isClosable: true,
             })
-            return;
-        } else {
-            mutate(id);
         }
     }
 

@@ -51,13 +51,22 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
             return;
         }
 
-        mutate({
-            personId, 
-            name, 
-            telephone: unmaskTelephone(telephone), 
-            email 
-        });
-        clearFields();
+        try {
+            mutate({
+                personId, 
+                name, 
+                telephone: unmaskTelephone(telephone), 
+                email 
+            });
+            clearFields();
+        } catch (error) {
+            toast({
+                title: "Erro ao cadastrar",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            })
+        }
     }
 
     const clearFields = () => {
