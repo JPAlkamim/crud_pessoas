@@ -8,9 +8,24 @@ Este projeto utiliza as seguintes tecnologias:
 - PostgreSQL para integração com o banco de dados
 - React para o frontend
 
-## Banco de Dados e Relações entre Tabelas
+Este projeto utiliza migrações Flyway para gerenciar o esquema do banco de dados. As migrações Flyway permitem que as alterações no esquema do banco de dados sejam versionadas e aplicadas de forma controlada, garantindo consistência entre os ambientes de desenvolvimento, teste e produção.
 
-Para criar o banco de dados, utilize os seguintes comandos SQL:
+### Configuração do Banco de Dados
+
+Para que o aplicativo funcione corretamente, é necessário configurar as propriedades de conexão com o banco de dados no arquivo `application.properties`. Você deve especificar a URL do banco de dados, o nome de usuário e a senha.
+
+Exemplo de configuração no `application.properties`:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/meubanco
+spring.datasource.username=usuario
+spring.datasource.password=senha
+```
+Substitua 'meubanco', 'usuario' e 'senha' pelos valores correspondentes ao seu ambiente de banco de dados.
+
+## Criação das tabelas
+
+As tabelas 'Pessoa' e 'lista_de_contato' são criadas utilizando os seguintes comandos SQL:
 
 ```sql
 CREATE TABLE Pessoa (
@@ -30,7 +45,7 @@ CREATE TABLE lista_de_contato (
 );
 ```
 
-A tabela `lista_de_contato` possui uma chave estrangeira (`person_id`) que referencia a tabela `Pessoa` e todos os campos são obrigatórios.
+Estes comandos SQL podem ser executados manualmente em seu banco de dados para criar as tabelas necessárias. No entanto, como mencionado anteriormente, o Flyway cuidará automaticamente da criação das tabelas e migrações conforme necessário, desde que as configurações do banco de dados estejam corretamente definidas no arquivo 'application.properties'.
 
 ## Executando o Projeto
 
