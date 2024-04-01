@@ -26,7 +26,7 @@ public class PessoaService {
     }
 
     public Pessoa create(Pessoa pessoa) {
-        validatePerson(pessoa);
+//        validatePerson(pessoa);
         return pessoaRepository.save(pessoa);
     }
 

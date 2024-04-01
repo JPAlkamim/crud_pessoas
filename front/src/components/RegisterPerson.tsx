@@ -7,11 +7,11 @@ import { FormControl,
         useToast,
         FormErrorMessage
 } from "@chakra-ui/react"
-import { useRegisterPersonData } from "../hooks/useRegisterPersonData"
 import { PersonData } from "../interface/PersonData"
 import { cpfMask, cpfUnmask } from "../helpers/CPFMask"
 import { ListContact } from "../interface/ListContact"
 import { validateCPF } from "../helpers/CPFHelper"
+import { personService } from "../services/personService"
 
 export const RegisterPerson = () => {
     const [personRegister, setPersonRegister] = useState<PersonData>({
@@ -46,7 +46,6 @@ export const RegisterPerson = () => {
         return value.replace(/\D/g, '');
     }
 
-    const { mutate } = useRegisterPersonData();
     const toast = useToast();
 
     const handleName = (newName: string) => {
@@ -116,9 +115,9 @@ export const RegisterPerson = () => {
 
         if (personRegister.birthDate > new Date().toISOString().split('T')[0]) {
             toast({
-                title: "Data de maior que o dia atual",
+                title: "Data maior que o dia atual",
                 status: "error",
-                duration: 2000,
+                duration: 3000,
                 isClosable: true,
             });
             setInvalidFields({ ...invalidFields, birthDate: true });
@@ -139,27 +138,22 @@ export const RegisterPerson = () => {
                 }
             ]
         };
-        try {
-            mutate(personData);
+        personService.createPerson(personData).then(() => {
             toast({
-                title: "Pessoa cadastrada com sucesso!",
+                title: "Cadastro realizado com sucesso",
                 status: "success",
                 duration: 2000,
                 isClosable: true,
             });
-            setTimeout(() => {
-                clearFields();
-            }, 2000);
-        } catch (error) {
+            clearFields();
+        }).catch(() => {
             toast({
                 title: "Erro ao cadastrar",
-                description: "Erro ao cadastrar pessoa",
                 status: "error",
                 duration: 2000,
                 isClosable: true,
             });
-            return;
-        }
+        });
     }
 
     const clearFields = () => {
@@ -182,7 +176,7 @@ export const RegisterPerson = () => {
                 <form>
                     <div className="grid grid-cols-2 gap-10">
                         <div>
-                            <h2 className="flex justify-center mb-5">Cadastro Pessoa</h2>
+                            <h2 className="flex justify-center mb-5 font-bold text-2xl">Cadastro Pessoa</h2>
                             <FormControl id="name" isRequired isInvalid={invalidFields.name}>
                                 <FormLabel>Nome</FormLabel>
                                 <Input type="text" value={personRegister.name} onChange={(e) => handleName(e.target.value)} />
@@ -200,7 +194,7 @@ export const RegisterPerson = () => {
                             </FormControl>
                         </div>
                         <div>
-                            <h2 className="flex justify-center mb-5">Cadastro Contato</h2>
+                            <h2 className="flex justify-center mb-5 font-bold text-2xl">Cadastro Contato</h2>
                             <FormControl id="name" isRequired isInvalid={invalidFields.contactName}>
                                 <FormLabel>Nome</FormLabel>
                                 <Input type="text" value={contactRegister.name} onChange={(e) => {

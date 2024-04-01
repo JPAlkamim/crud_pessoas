@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDeletePersonData } from "../hooks/useDeletePersonData";
-import { usePersonData } from "../hooks/usePersonData";
 import { Header } from "./Header"
 import { Table,
         Thead,
@@ -22,11 +20,10 @@ import moment from "moment";
 import { UpdateModalPerson } from "./UptdateModalPerson";
 import { PersonData } from "../interface/PersonData";
 import { ListContactModal } from "./ListContactModal";
-import axios from "axios";
+import { personService } from "../services/personService";
+import { listContactService } from "../services/listContactService";
 
 export const ListPerson = () => {
-    const { data } = usePersonData(0, 5);
-    const { mutate } = useDeletePersonData();
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openListContactModal, setOpenListContactModal] = useState(false);
     const [person, setPerson] = useState<PersonData>();
@@ -43,8 +40,21 @@ export const ListPerson = () => {
     });
 
     useEffect(() => {
-        setPersonData(data);
-    }, [data])
+        handleSearch();
+    }, [])
+
+    const handleSearch = () => {
+        personService.fetchPersonData(pageable.page, pageable.size).then((response) => {
+            setPersonData(response.data);
+        }).catch(() => {
+            toast({
+                title: "Erro ao buscar",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            })
+        })
+    }
 
     const cpfMask = (value: string) => {
         return value
@@ -56,9 +66,8 @@ export const ListPerson = () => {
     }
 
     const handleDelete = async (id: number) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/lista-de-contato/all-by-person-id/${id}`);
-            if (response.data.length > 0) {
+        listContactService.fetchListContactData(id).then((response) => {
+            if(response.data.length > 0) {
                 toast({
                     title: "Erro ao deletar",
                     description: "A pessoa possui contatos cadastrados",
@@ -66,18 +75,24 @@ export const ListPerson = () => {
                     duration: 2000,
                     isClosable: true,
                 })
-                return;
             } else {
-                mutate(id);
+                personService.deletePerson(id).then(() => {
+                    toast({
+                        title: "Deletado com sucesso",
+                        status: "success",
+                        duration: 2000,
+                        isClosable: true,
+                    })
+                }).catch(() => {
+                    toast({
+                        title: "Erro ao deletar",
+                        status: "error",
+                        duration: 2000,
+                        isClosable: true,
+                    })
+                })
             }
-        } catch (error) {
-            toast({
-                title: "Erro ao deletar",
-                status: "error",
-                duration: 2000,
-                isClosable: true,
-            })
-        }
+        })
     }
 
     const handleEditModal = (clickedPerson: PersonData) => {
@@ -90,12 +105,7 @@ export const ListPerson = () => {
         setPerson(clickedPerson);
     }
 
-    const handleSearch = () => {
-        axios.get(`http://localhost:8080/api/pessoa/find-all/${pageable.page}/${pageable.size}`)
-            .then(response => {
-                setPersonData(response.data);
-            })
-    }
+  
 
     return (
         <>
@@ -150,7 +160,7 @@ export const ListPerson = () => {
                     <ModalContent>
                         <ModalCloseButton />
                         <ModalHeader>Atualizar Dados da Pessoa</ModalHeader>
-                        <UpdateModalPerson personData={person}/>
+                        <UpdateModalPerson personData={person} searchPerson={handleSearch} />
                     </ModalContent>
                 </Modal>
                 <Modal isOpen={openListContactModal} onClose={() => setOpenListContactModal(false)} size="xl">

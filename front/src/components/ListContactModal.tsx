@@ -1,20 +1,37 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr, useToast } from "@chakra-ui/react"
-import { useState } from "react"
-import { useListContactData } from "../hooks/useListContactData";
+import { useEffect, useState } from "react"
 import { ListContact } from "../interface/ListContact";
-import { useRegisterListContactData } from "../hooks/useRegisterListContactData";
-import { useDeleteListContact } from "../hooks/useDeleteListContact";
+import { listContactService } from "../services/listContactService";
 
 
 export const ListContactModal = ({ personId }: { personId?: number }) => {
-    const { data } = useListContactData(personId);
-    const { mutate } = useRegisterListContactData();
-    const { mutate: deleteContact } = useDeleteListContact();
+    const [listContactData, setListContactData] = useState<ListContact[]>();
     const [name, setName] = useState('');
     const [telephone, setTelephone] = useState('');
     const [email, setEmail] = useState('');
-    const [wrongEmail, setWrongEmail] = useState(false);
+    const [invalidFields, setInvalidFields] = useState({
+        name: false,
+        telephone: false,
+        email: false
+    });
     const toast = useToast();
+
+    useEffect(() => {
+        handleSearch();
+    }, [])
+
+    const handleSearch = () => {
+        listContactService.fetchListContactData(personId).then((response) => {
+            setListContactData(response.data);
+        }).catch(() => {
+            toast({
+                title: "Erro ao buscar",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            })
+        })
+    }
 
     const maskTelephone = (value: string) => {
         return value
@@ -40,44 +57,67 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
         setEmail(newEmail);
     };
 
+    const validateFields = () => {
+        const invalidFields = {
+            name: false,
+            telephone: false,
+            email: false
+        }
+        if (!name) {
+            invalidFields.name = true;
+        }
+        if (!telephone) {
+            invalidFields.telephone = true;
+        }
+        if (!email) {
+            invalidFields.email = true;
+        }
+        setInvalidFields(invalidFields);
+        return invalidFields.name || invalidFields.telephone || invalidFields.email;
+    }
+
     const handleSubmit = () => {
-        if (!name || !telephone || !email) {
+        if (validateFields()) {
             return;
         }
-
         const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
         if (!emailRegex.test(email)) {
-            setWrongEmail(true);
+            setInvalidFields({ ...invalidFields, email: true });
             return;
         }
 
-        try {
-            mutate({
-                personId, 
-                name, 
-                telephone: unmaskTelephone(telephone), 
-                email 
-            });
+        listContactService.createListContact({
+            name,
+            telephone: unmaskTelephone(telephone),
+            email,
+            personId
+        }).then(() => {
             clearFields();
-        } catch (error) {
+            handleSearch();
+            toast({
+                title: "Cadastrado com sucesso",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+            })
+        }).catch(() => {
             toast({
                 title: "Erro ao cadastrar",
                 status: "error",
                 duration: 2000,
                 isClosable: true,
             })
-        }
+        })
     }
 
     const clearFields = () => {
         setName('');
         setTelephone('');
         setEmail('');
-        setWrongEmail(false);
     }
 
-    const handleDelete = (id?: number) => {
-        if(data.length === 1) {
+    const handleDelete = (id: any) => {
+        if(listContactData && listContactData.length === 1) {
             toast({
                 title: "Erro ao deletar",
                 description: "A pessoa precisa ter ao menos um contato",
@@ -86,7 +126,22 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
                 isClosable: true,
             })
         } else {
-            deleteContact(id);
+            listContactService.deleteListContact(id).then(() => {
+                handleSearch();
+                toast({
+                    title: "Deletado com sucesso",
+                    status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                })
+            }).catch(() => {
+                toast({
+                    title: "Erro ao deletar",
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                })
+            })
         }
     }
 
@@ -102,7 +157,7 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {data?.map((contact: ListContact) => (
+                    {listContactData?.map((contact: ListContact) => (
                         <Tr key={contact.id}>
                             <Td>{contact.name}</Td>
                             <Td>{maskTelephone(contact.telephone)}</Td>
@@ -121,18 +176,29 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
             <div className="mt-10 border-4 p-5">
                 <h2 className="text-xl flex justify-center">Cadastrar um novo contato</h2>
                 <div>
-                    <FormControl id="name" isRequired>
+                    <FormControl id="name" isRequired isInvalid={invalidFields.name}>
                         <FormLabel>Nome</FormLabel>
-                        <Input type="text" value={name} onChange={(e) => handleName(e.target.value)} size="sm"/>
+                        <Input type="text" value={name} onChange={(e) => {
+                            handleName(e.target.value);
+                            setInvalidFields({ ...invalidFields, name: false });
+                        }} size="sm" />
+                        <FormErrorMessage>Nome inválido</FormErrorMessage>
                     </FormControl>
                     <div className="grid grid-cols-2 gap-3">
-                        <FormControl id="tel" isRequired>
+                        <FormControl id="tel" isRequired isInvalid={invalidFields.telephone}>
                             <FormLabel>Telefone</FormLabel>
-                            <Input type="tel" value={telephone} onChange={(e) => handleTelephone(e.target.value)} size="sm" />
+                            <Input type="tel" value={telephone} onChange={(e) => {
+                                handleTelephone(e.target.value);
+                                setInvalidFields({ ...invalidFields, telephone: false });
+                            }} size="sm" />
+                            <FormErrorMessage>Telefone inválido</FormErrorMessage>
                         </FormControl>
-                        <FormControl id="email" isRequired isInvalid={wrongEmail}>
+                        <FormControl id="email" isRequired isInvalid={invalidFields.email}>
                             <FormLabel>Email</FormLabel>
-                            <Input type="email" value={email} onChange={(e) => handleEmail(e.target.value)} size="sm" />
+                            <Input type="email" value={email} onChange={(e) => {
+                                handleEmail(e.target.value);
+                                setInvalidFields({ ...invalidFields, email: false });
+                            }} size="sm" />
                             <FormErrorMessage>Email inválido</FormErrorMessage>
                         </FormControl>
                     </div>
