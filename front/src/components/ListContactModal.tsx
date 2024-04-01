@@ -146,7 +146,7 @@ export const ListContactModal = ({ personId }: { personId?: number }) => {
     }
 
     return (
-        <div className="p-5 overflow-scroll max-h-96">
+        <div className="p-5 overflow-auto max-h-lvh">
             <Table variant="striped" size="sm">
                 <Thead>
                     <Tr>
